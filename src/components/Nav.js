@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Button, Navbar } from "flowbite-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import AuthContext from "../context/Auth/AuthContext";
 const Nav = () => {
   const location = useLocation();
+  const authContext = useContext(AuthContext);
+  const { isAuthenticated, logout } = authContext;
+  const navigate = useNavigate();
+  const [isAuth, setIsAuth] = useState(false);
+  useEffect(() => {
+    const auth = async () => {
+      const auth = await isAuthenticated();
+      setIsAuth(auth);
+      if (!auth) {
+        navigate("/login");
+      }
+    };
+    auth(); // eslint-disable-next-line
+  }, [isAuthenticated, navigate]);
   return (
     <Navbar fluid rounded>
       <Navbar.Brand>
@@ -21,25 +36,35 @@ const Nav = () => {
 
       <Navbar.Toggle />
       <Navbar.Collapse>
-        <div className="flex gap-4 flex-row items-center">
-          <Navbar.Link
-            className="mr-4"
-            active={location.pathname === "/" || location.pathname === "/home"}>
-            <Link to="/">Home</Link>
-          </Navbar.Link>
+        <div className="flex gap-4 flex-col md:flex-row items-center">
+          {isAuth && (
+            <Navbar.Link
+              active={
+                location.pathname === "/" || location.pathname === "/home"
+              }>
+              <Link to="/">Home</Link>
+            </Navbar.Link>
+          )}
           <Navbar.Link active={location.pathname === "/about"}>
             <Link to="/about">About</Link>
           </Navbar.Link>
-          <Navbar.Link active={location.pathname === "/login"}>
-            <Button className="bg-transparent hover:text-white text-black">
-              <Link to="/login">Login</Link>
+          {!isAuth ? (
+            <>
+              <Button>
+                <Link to="/login">Login</Link>
+              </Button>
+              <Button>
+                <Link to="/signup">Signup</Link>
+              </Button>
+            </>
+          ) : (
+            <Button
+              onClick={() => {
+                logout(navigate);
+              }}>
+              Logout
             </Button>
-          </Navbar.Link>
-          <Navbar.Link active={location.pathname === "/signup"}>
-            <Button>
-              <Link to="/signup">Signup</Link>
-            </Button>
-          </Navbar.Link>
+          )}
         </div>
       </Navbar.Collapse>
     </Navbar>
