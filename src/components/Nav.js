@@ -14,7 +14,7 @@ const Nav = () => {
       setIsAuth(auth);
       if (
         (!auth && location.pathname === "/home") ||
-        location.pathname === "/"
+        (!auth && location.pathname === "/")
       ) {
         navigate("/login");
       }
