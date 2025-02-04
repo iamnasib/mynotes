@@ -12,7 +12,10 @@ const Nav = () => {
     const auth = async () => {
       const auth = await isAuthenticated();
       setIsAuth(auth);
-      if (!auth) {
+      if (
+        (!auth && location.pathname === "/home") ||
+        location.pathname === "/"
+      ) {
         navigate("/login");
       }
     };
