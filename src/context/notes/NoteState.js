@@ -30,7 +30,7 @@ const NoteState = (props) => {
 
       setnotes(data.notes);
     } catch (error) {
-      showAlert(error.message, "danger");
+      // showAlert(error.message, "danger");
       return;
     }
   };
@@ -63,7 +63,7 @@ const NoteState = (props) => {
   };
 
   //Function to create note for a authenticated user
-  const addNote = async (title, description, type) => {
+  const addNote = async (title, description, type, navigate) => {
     try {
       const response = await fetch(`${backendUrl}/api/notes/create`, {
         method: "POST",
@@ -86,6 +86,7 @@ const NoteState = (props) => {
 
       showAlert("Note Added", "success");
       setnotes([...notes, data.CreatedNote]);
+      navigate("/");
     } catch (error) {
       showAlert(error.message, "danger");
       return;
@@ -93,7 +94,7 @@ const NoteState = (props) => {
   };
 
   //Function to update a note for a authenticated user
-  const updateNote = async (id, title, description, type) => {
+  const updateNote = async (id, title, description, type, navigate) => {
     // Api call to update note in the database
     try {
       const response = await fetch(`${backendUrl}/api/notes/update/${id}`, {
@@ -120,6 +121,7 @@ const NoteState = (props) => {
       setnotes((prevNotes) =>
         prevNotes.map((note) => (note._id === id ? data.note : note))
       );
+      navigate("/");
     } catch (error) {
       showAlert(error.message, "danger");
       return;

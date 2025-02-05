@@ -42,6 +42,7 @@ const Nav = () => {
         <div className="flex gap-4 flex-col md:flex-row items-center">
           {isAuth && (
             <Navbar.Link
+              className="rounded"
               active={
                 location.pathname === "/" || location.pathname === "/home"
               }>
@@ -61,12 +62,13 @@ const Nav = () => {
               </Button>
             </>
           ) : (
-            <Button
+            <button
+              className="bg-red-500 text-white px-2.5 py-2 rounded hover:bg-red-900"
               onClick={() => {
                 logout(navigate);
               }}>
               Logout
-            </Button>
+            </button>
           )}
         </div>
       </Navbar.Collapse>

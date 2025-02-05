@@ -9,6 +9,12 @@ const LoginForm = () => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const navigate = useNavigate();
 
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   const onChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
@@ -49,7 +55,7 @@ const LoginForm = () => {
               id="password"
               autoComplete="current-password"
               placeholder="********"
-              type="password"
+              type={showPassword ? "text" : "password"}
               required
               name="password"
               value={credentials.password}
@@ -57,9 +63,10 @@ const LoginForm = () => {
             />
           </div>
           <div className="flex items-center gap-2">
-            <Checkbox id="remember" />
-            <Label htmlFor="remember">Remember me</Label>
+            <Checkbox onChange={togglePassword} id="remember" />
+            <Label htmlFor="remember">Show Password</Label>
           </div>
+
           <Button type="submit">Log in</Button>
         </form>
       </div>

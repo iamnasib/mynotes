@@ -40,9 +40,9 @@ const CreateUpdateNote = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (noteId) {
-      updateNote(noteId, title, description, type);
+      updateNote(noteId, title, description, type, navigate);
     } else {
-      await addNote(title, description, type);
+      await addNote(title, description, type, navigate);
       setTitle("");
       setDescription("");
       setType("");
